@@ -18,6 +18,7 @@ LOGO = 'bomberman_logo.png'
 
 #Game_Screen
 BOMBERMAN = 'bomberman.png'
+BOMB = 'bomb.png'
 
 #Text_Font
 FONT = 'gill sans'

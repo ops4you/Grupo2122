@@ -16,6 +16,9 @@ class Game:
         self.running = True
         self.font = pygame.font.match_font(constants.FONT)
         self.load_files()
+        self.p1 = Player(50,50,2,0,0)
+        self.b1 = Bomb(0,0)
+        self.bomb_timer = 5
     
 
     def new_game(self):
@@ -38,18 +41,43 @@ class Game:
             if event.type == pygame.QUIT:
                 if self.playing:
                     self.playing = False
-                self.running = False        
+                self.running = False  
+            if event.type == pygame.KEYDOWN: 
+                if event.key == pygame.K_LEFT:
+                 self.p1.x_change = -2
+                if event.key == pygame.K_RIGHT:
+                 self.p1.x_change = 2
+                if event.key == pygame.K_UP:
+                 self.p1.y_change = -2
+                if event.key == pygame.K_DOWN:
+                 self.p1.y_change = 2
+                if event.key == pygame.K_SPACE: 
+                    if(self.p1.bombs>0):
+                        if(self.bomb_timer>0):
+                         self.p1.bombactive = True
+                         self.b1.x = self.p1.x
+                         self.b1.y = self.p1.y
+                         self.bomb_timer -= 1
+                         print(self.bomb_timer)
+                        elif(self.bomb_timer<=0): self.bomb_timer = 5       
+
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                 self.p1.x_change = 0  
+                if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                 self.p1.y_change = 0                
     
     def update_chars(self):
         #update chars
-        self.all_chars.update()
+        self.p1.update()
         pygame.display.update()
-        pass
 
     def draw_chars(self):
         #draw chars
         self.display.fill(constants.WHITE) #cleaning display
-        self.all_chars.draw(self.display) #draw all chars
+        self.display.blit(self.bomberman,(self.p1.x,self.p1.y))
+        if(self.p1.bombactive==True):
+            self.display.blit(self.bomb,(self.b1.x,self.b1.y))
         pygame.display.flip()
 
     def load_files(self):
@@ -57,6 +85,10 @@ class Game:
         image_path = os.path.join(os.getcwd(),'images')
         self.bomberman_logo = os.path.join(image_path,constants.LOGO)
         self.bomberman_logo = pygame.image.load(self.bomberman_logo)
+        self.bomberman = os.path.join(image_path,constants.BOMBERMAN)
+        self.bomberman = pygame.image.load(self.bomberman)
+        self.bomb = os.path.join(image_path,constants.BOMB)
+        self.bomb = pygame.image.load(self.bomb)
 
     def show_text(self, text, size, color, x, y):
         #Show some text on the display
@@ -94,49 +126,24 @@ class Game:
 
 
 class Player():
-    def __init__(self,x,y,bombs,x_update,y_update,bomb_update):
-        self.x
-        self.y
-        self.bombs
-        self.x_update
-        self.y_update
-        self.bomb_update
-
-    def load_file(self):
-        image_path = os.path.join(os.getcwd(),'images')
-        self.bomberman = os.path.join(image_path,constants.BOMBERMAN)
-        self.bomberman = pygame.image.load(self.bomberman)
-
-
-    def events(self):
-        #define game events
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                if self.playing:
-                    self.playing = False
-                self.running = False        
+    def __init__(self,x,y,bombs,x_change,y_change):
+        self.x = x
+        self.y = y
+        self.bombs = bombs
+        self.bombactive = False
+        self.x_change = x_change
+        self.y_change = y_change   
     
     def update(self):
         #update chars
-        self.all_chars.update()
+        self.x += self.x_change
+        self.y += self.y_change
         pygame.display.update()
-        pass
 
-    def draw(self):
-        #draw chars
-        pygame.display.blit(self.bomberman)
-
-    def run(self):
-        #game_loop
-        self.playing = True
-        while self.playing:
-            self.clock.tick(constants.FPS)   
-            self.events()
-            self.update()
-            self.draw()   
-
-    
-
+class Bomb():
+    def __init__(self,x,y):
+        self.x = x
+        self.y = y
 
 g = Game()
 g.start_dipslay()                            
