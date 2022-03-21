@@ -1,6 +1,6 @@
 #Dipslay dimensions
-WIDTH = 480
-HEIGHT = 600
+WIDTH = 870
+HEIGHT = 500
 
 #Game Title
 GAME_TITLE = 'Bomberman'
@@ -19,6 +19,8 @@ LOGO = 'bomberman_logo.png'
 #Game_Screen
 BOMBERMAN = 'bomberman.png'
 BOMB = 'bomb.png'
+#EXPLODE = 'explode.png'
+WALL = 'wall.png'
 
 #Text_Font
 FONT = 'gill sans'

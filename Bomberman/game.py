@@ -3,6 +3,22 @@ import constants
 import chars
 import os
 
+map1 ="""                             
+                             
+wwwwwwwwwwwwwwwwwwwwwwwwwwwww
+w             w             w
+w                           w
+w    wwwwww    wwwww      www
+www    w                  w w
+w      w          w         w
+w   wwwww     wwwwwww      ww
+w      wwwwww     w     w   w
+w    w      w   www  wwww   w
+w      w          w     w   w
+w   wwwwww www wwww     w   w
+w     w              ww w   w
+w                           w
+wwwwwwwwwwwwwwwwwwwwwwwwwwwww"""
 
 class Game:
     def __init__(self):
@@ -18,7 +34,10 @@ class Game:
         self.load_files()
         self.p1 = Player(50,50,2,0,0)
         self.b1 = Bomb(0,0)
-        self.bomb_timer = 5
+        self.pressb = -5000000000
+        self.presse = -5000000000
+        self.current_time = 0
+        self.map1 = map1.splitlines()
     
 
     def new_game(self):
@@ -30,7 +49,8 @@ class Game:
         #game_loop
         self.playing = True
         while self.playing:
-            self.clock.tick(constants.FPS)   
+            self.clock.tick(constants.FPS)  
+            self.current_time = pygame.time.get_ticks()
             self.events()
             self.update_chars()
             self.draw_chars()
@@ -44,22 +64,23 @@ class Game:
                 self.running = False  
             if event.type == pygame.KEYDOWN: 
                 if event.key == pygame.K_LEFT:
-                 self.p1.x_change = -2
+                  if(self.p1.x > 1):
+                    self.p1.x_change = -2
+                  else: self.p1.x_change = 0 
                 if event.key == pygame.K_RIGHT:
-                 self.p1.x_change = 2
+                  if(self.p1.x < 433):
+                     self.p1.x_change = 2
+                  else: self.p1.x_change = 0
                 if event.key == pygame.K_UP:
                  self.p1.y_change = -2
                 if event.key == pygame.K_DOWN:
                  self.p1.y_change = 2
                 if event.key == pygame.K_SPACE: 
                     if(self.p1.bombs>0):
-                        if(self.bomb_timer>0):
-                         self.p1.bombactive = True
+                         self.pressb = pygame.time.get_ticks()
                          self.b1.x = self.p1.x
                          self.b1.y = self.p1.y
-                         self.bomb_timer -= 1
-                         print(self.bomb_timer)
-                        elif(self.bomb_timer<=0): self.bomb_timer = 5       
+                         self.p1.bombs -= 1
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
@@ -70,25 +91,41 @@ class Game:
     def update_chars(self):
         #update chars
         self.p1.update()
+        print(self.p1.x,self.p1.y)
         pygame.display.update()
 
     def draw_chars(self):
         #draw chars
         self.display.fill(constants.WHITE) #cleaning display
+        
+        self.tiles(self.map1)
         self.display.blit(self.bomberman,(self.p1.x,self.p1.y))
-        if(self.p1.bombactive==True):
+
+        if (self.current_time - self.pressb)<3000:
             self.display.blit(self.bomb,(self.b1.x,self.b1.y))
+        elif((self.current_time - self.pressb)>3000): 
+            pygame.transform.flip(self.bomb,self.b1.x,self.b1.y)   
+  
         pygame.display.flip()
 
     def load_files(self):
         #load image files
         image_path = os.path.join(os.getcwd(),'images')
+
         self.bomberman_logo = os.path.join(image_path,constants.LOGO)
         self.bomberman_logo = pygame.image.load(self.bomberman_logo)
+
         self.bomberman = os.path.join(image_path,constants.BOMBERMAN)
         self.bomberman = pygame.image.load(self.bomberman)
+
         self.bomb = os.path.join(image_path,constants.BOMB)
         self.bomb = pygame.image.load(self.bomb)
+
+        #self.explode = os.path.join(image_path,constants.EXPLODE)
+        #self.explode = pygame.image.load(self.explode)
+
+        self.wall = os.path.join(image_path,constants.WALL) 
+        self.wall = pygame.image.load(self.wall)
 
     def show_text(self, text, size, color, x, y):
         #Show some text on the display
@@ -124,13 +161,18 @@ class Game:
     def game_over_display(self):
         pass
 
+    def tiles(self,map1):
+     for y, line in enumerate(self.map1):
+        for x, c in enumerate(line):
+            if c == "w":
+                self.display.blit(self.wall, (x * 30, y * 30))
+
 
 class Player():
     def __init__(self,x,y,bombs,x_change,y_change):
         self.x = x
         self.y = y
         self.bombs = bombs
-        self.bombactive = False
         self.x_change = x_change
         self.y_change = y_change   
     
