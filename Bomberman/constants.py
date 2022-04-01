@@ -21,6 +21,7 @@ BOMBERMAN = 'bomberman.png'
 BOMB = 'bomb.png'
 #EXPLODE = 'explode.png'
 WALL = 'wall.png'
+WALL2 = 'wall2.png'
 
 #Text_Font
 FONT = 'gill sans'
