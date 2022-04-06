@@ -77,8 +77,8 @@ node n12 {
 	hostname RedeWirelessEstatica
 	!
 	interface wireless
-	 ipv6 address 2001:8::0/128
 	 ip address 10.0.0.0/32
+	 ipv6 address 2001:690:2280:28::0/64
 	!
 	mobmodel
 	coreapi
@@ -151,21 +151,21 @@ node n1 {
 	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
 	  ipv6 ospf6 flood-delay 200
-	  ip ospf6 network point-to-point
-	  ip ospf6 hello-interval 2
-	  ip ospf6 dead-interval 6
-	  ip ospf6 retransmit-interval 5
+	  ipv6 ospf6 network point-to-point
+	  ipv6 ospf6 hello-interval 2
+	  ipv6 ospf6 dead-interval 6
+	  ipv6 ospf6 retransmit-interval 5
 	!
 	interface eth1
 	  
 	  ipv6 address 2001:690:2280:21::1/64
 	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 flood-delay 200
-	  ip ospf6 network point-to-point
-	  ip ospf6 hello-interval 2
-	  ip ospf6 dead-interval 6
-	  ip ospf6 retransmit-interval 5
+	  ipv6 ospf6 flood-delay 100
+	  ipv6 ospf6 network point-to-point
+	  ipv6 ospf6 hello-interval 2
+	  ipv6 ospf6 dead-interval 6
+	  ipv6 ospf6 retransmit-interval 5
 	
 	!
 	interface eth2
@@ -173,7 +173,11 @@ node n1 {
 	  ipv6 address 2001:690:2280:25::1/64
 	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 flood-delay 200
+	  ipv6 ospf6 flood-delay 100
+	  ipv6 ospf6 network point-to-point
+	  ipv6 ospf6 hello-interval 2
+	  ipv6 ospf6 dead-interval 6
+	  ipv6 ospf6 retransmit-interval 5
 	!
 	router ospf6
 	  instance-id 0
@@ -224,10 +228,10 @@ node n2 {
 	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
 	  ipv6 ospf6 flood-delay 200
-	  ip ospf6 network point-to-point
-	  ip ospf6 hello-interval 2
-	  ip ospf6 dead-interval 6
-	  ip ospf6 retransmit-interval 5
+	  ipv6 ospf6 network point-to-point
+	  ipv6 ospf6 hello-interval 2
+	  ipv6 ospf6 dead-interval 6
+	  ipv6 ospf6 retransmit-interval 5
 	!
 	interface eth1
 	  
@@ -235,10 +239,10 @@ node n2 {
 	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
 	  ipv6 ospf6 flood-delay 200
-	  ip ospf6 network point-to-point
-	  ip ospf6 hello-interval 2
-	  ip ospf6 dead-interval 6
-	  ip ospf6 retransmit-interval 5
+	  ipv6 ospf6 network point-to-point
+	  ipv6 ospf6 hello-interval 2
+	  ipv6 ospf6 dead-interval 6
+	  ipv6 ospf6 retransmit-interval 5
 	!
 	router ospf6
 	  instance-id 0
@@ -292,10 +296,10 @@ node n3 {
 	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
 	  ipv6 ospf6 flood-delay 200
-	  ip ospf network point-to-point
-	  ip ospf6 hello-interval 2
-	  ip ospf6 dead-interval 6
-	  ip ospf6 retransmit-interval 5
+	  ipv6 ospf6 network point-to-point
+	  ipv6 ospf6 hello-interval 2
+	  ipv6 ospf6 dead-interval 6
+	  ipv6 ospf6 retransmit-interval 5
 	!
 	interface eth1
 	  
@@ -303,10 +307,10 @@ node n3 {
 	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
 	  ipv6 ospf6 flood-delay 200
-	  ip ospf network point-to-point
-	  ip ospf6 hello-interval 2
-	  ip ospf6 dead-interval 6
-	  ip ospf6 retransmit-interval 5
+	  ipv6 ospf6 network point-to-point
+	  ipv6 ospf6 hello-interval 2
+	  ipv6 ospf6 dead-interval 6
+	  ipv6 ospf6 retransmit-interval 5
 	!
 	interface eth2
 	  
@@ -314,6 +318,10 @@ node n3 {
 	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
 	  ipv6 ospf6 flood-delay 200
+	  ipv6 ospf6 network point-to-point
+	  ipv6 ospf6 hello-interval 2
+	  ipv6 ospf6 dead-interval 6
+	  ipv6 ospf6 retransmit-interval 5
 	!
 	router ospf6
 	  instance-id 0
@@ -333,9 +341,6 @@ node n4 {
     model router
     network-config {
 	hostname RW1
-	!
-	interface eth2
-	 ipv6 address 2001:690:2280:20::1/64
 	!
 	interface eth1
 	 ipv6 address 2001:690:2280:28::2/64
@@ -366,10 +371,8 @@ node n4 {
 	  ipv6 address 2001:690:2280:24::2/64
 	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 flood-delay 200
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
+	  ipv6 ospf6 flood-delay 100
+	  ipv6 ospf6 network point-to-point
 	  ipv6 ospf6 network manet-designated-router
 	  ipv6 ospf6 twohoprefresh 3
 	  ipv6 ospf6 adjacencyconnectivity uniconnected
@@ -380,10 +383,8 @@ node n4 {
 	  ipv6 address 2001:690:2280:28::2/64
 	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 flood-delay 200
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
+	  ipv6 ospf6 flood-delay 100
+	  ipv6 ospf6 network point-to-point
 	  ipv6 ospf6 network manet-designated-router
 	  ipv6 ospf6 twohoprefresh 3
 	  ipv6 ospf6 adjacencyconnectivity uniconnected
@@ -399,7 +400,6 @@ node n4 {
 	
 	}
     }
-    interface-peer {eth2 n18}
 }
 
 node n5 {
@@ -438,10 +438,10 @@ node n5 {
 	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
 	  ipv6 ospf6 flood-delay 200
-	  ip ospf6 network point-to-point
-	  ip ospf6 hello-interval 2
-	  ip ospf6 dead-interval 6
-	  ip ospf6 retransmit-interval 5
+	  ipv6 ospf6 network point-to-point
+	  ipv6 ospf6 hello-interval 2
+	  ipv6 ospf6 dead-interval 6
+	  ipv6 ospf6 retransmit-interval 5
 	!
 	interface eth1
 	  
@@ -449,10 +449,10 @@ node n5 {
 	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
 	  ipv6 ospf6 flood-delay 200
-	  ip ospf6 network point-to-point
-	  ip ospf6 hello-interval 2
-	  ip ospf6 dead-interval 6
-	  ip ospf6 retransmit-interval 5
+	  ipv6 ospf6 network point-to-point
+	  ipv6 ospf6 hello-interval 2
+	  ipv6 ospf6 dead-interval 6
+	  ipv6 ospf6 retransmit-interval 5
 	!
 	router ospf6
 	  instance-id 0
@@ -551,10 +551,11 @@ node n9 {
 	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
 	  ipv6 ospf6 flood-delay 200
-	  ip ospf6 network point-to-point
-	  ip ospf6 hello-interval 2
-	  ip ospf6 dead-interval 6
-	  ip ospf6 retransmit-interval 5
+	  ipv6 ospf6 network point-to-point
+	  ipv6 ospf6 hello-interval 2
+	  ipv6 ospf6 dead-interval 6
+	  ipv6 ospf6 retransmit-interval 5
+	
 	!
 	interface eth1
 	  
@@ -562,10 +563,10 @@ node n9 {
 	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
 	  ipv6 ospf6 flood-delay 200
-	  ip ospf6 network point-to-point
-	  ip ospf6 hello-interval 2
-	  ip ospf6 dead-interval 6
-	  ip ospf6 retransmit-interval 5
+	  ipv6 ospf6 network point-to-point
+	  ipv6 ospf6 hello-interval 2
+	  ipv6 ospf6 dead-interval 6
+	  ipv6 ospf6 retransmit-interval 5
 	!
 	router ospf6
 	  instance-id 0
@@ -610,9 +611,7 @@ node n10 {
 	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
 	  ipv6 address 2001:690:2280:28::1/64
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
+	  ipv6 ospf6 network point-to-point
 	  ipv6 ospf6 network manet-designated-router
 	  ipv6 ospf6 twohoprefresh 3
 	  ipv6 ospf6 adjacencyconnectivity uniconnected
@@ -620,6 +619,7 @@ node n10 {
 	!
 	router ospf6
 	  instance-id 0
+	  redistribute connected
 	  router-id 0.0.0.10
 	  interface eth0 area 0.0.0.0
 	!
@@ -659,9 +659,7 @@ node n13 {
 	  ipv6 address 2001:690:2280:28::4/64
 	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
+	  ipv6 ospf6 network point-to-point
 	  ipv6 ospf6 network manet-designated-router
 	  ipv6 ospf6 twohoprefresh 3
 	  ipv6 ospf6 adjacencyconnectivity uniconnected
@@ -669,6 +667,7 @@ node n13 {
 	!
 	router ospf6
 	  instance-id 0
+	  redistribute connected
 	  router-id 0.0.0.13
 	  interface eth0 area 0.0.0.0
 	!
@@ -875,19 +874,15 @@ node n18 {
     network-config {
 	hostname VU1
 	!
-	interface eth1
-	 ipv6 address 2001:690:2280:20::2/64
-	!
 	interface eth0
 	 ipv6 address 2001:690:2280:28::6/64
 	!
     }
     canvas c1
-    iconcoords {538.0 408.0}
-    labelcoords {538.0 440.0}
+    iconcoords {535.0 397.0}
+    labelcoords {535.0 429.0}
     interface-peer {eth0 n12}
     services {OSPFv3MDR zebra IPForward}
-    interface-peer {eth1 n4}
     custom-config {
 	custom-config-id service:zebra
 	custom-command zebra
@@ -925,6 +920,7 @@ node n18 {
 	!
 	router ospf6
 	  instance-id 0
+	  redistribute connected
 	  router-id 0.0.0.18
 	  interface eth0 area 0.0.0.0
 	  interface eth1 area 0.0.0.0
@@ -1060,11 +1056,6 @@ link l17 {
 
 link l18 {
     nodes {n12 n17}
-}
-
-link l19 {
-    nodes {n4 n18}
-    bandwidth 0
 }
 
 annotation a1 {
