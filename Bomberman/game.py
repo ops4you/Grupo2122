@@ -1,5 +1,9 @@
 from turtle import pos
 import pygame
+import argparse
+import socket
+import threading
+import random
 import constants
 import chars
 import os
@@ -21,6 +25,9 @@ w     w              ww w   w
 w                           w
 wwwwwwwwwwwwwwwwwwwwwwwwwwwww"""
 
+serverAddressPort   = ("::1",20001)
+bufferSize          = 1024
+
 class Game:
     def __init__(self):
         #begin game display
@@ -33,19 +40,19 @@ class Game:
         self.running = True
         self.font = pygame.font.match_font(constants.FONT)
         self.load_files()
-        self.p1 = Player(self.bombermanr,2,0,0)
+        self.player = ""
+        self.p1 = Player(self.bombermanr,4,0,0)
         self.p1.rect.x = 100
         self.p1.rect.y = 100
-        self.b1 = Bomb(0,0)
+        self.otherPlayers = []
+        self.bombs = [Bomb(0,0),Bomb(0,0),Bomb(0,0),Bomb(0,0)]
+        self.i = 0
         self.position = pygame.math.Vector2(0,0) 
         self.pressb = -5000000000
         self.presse = -5000000000
-        self.colisionR = False
-        self.colisionL = False
-        self.colisionT = False
-        self.colisionB = False
         self.current_time = 0
         self.tile_rects = []
+        self.free_map = []
         self.map1 = map1.splitlines()
     
 
@@ -58,6 +65,7 @@ class Game:
         #game_loop
         self.playing = True
         while self.playing:
+            self.UDPClientSocket = socket.socket(family=socket.AF_INET6, type=socket.SOCK_DGRAM)
             self.clock.tick(60)  
             self.current_time = pygame.time.get_ticks()
             self.events()
@@ -81,10 +89,10 @@ class Game:
                 if event.key == pygame.K_DOWN:
                     self.p1.y_change = 2
                 if event.key == pygame.K_SPACE: 
-                    if(self.p1.bombs>0):
+                    if(self.p1.bombs>0 and self.i>=0 and self.i<4):
                          self.pressb = pygame.time.get_ticks()
-                         self.b1.x = self.p1.rect.x
-                         self.b1.y = self.p1.rect.y
+                         self.bombs[self.i].x = self.p1.rect.x
+                         self.bombs[self.i].y = self.p1.rect.y
                          self.p1.bombs -= 1
 
             if event.type == pygame.KEYUP:
@@ -100,6 +108,14 @@ class Game:
     def update_chars(self):
         #update chars
         self.update(self.p1.rect,self.tile_rects,self.p1.x_change,self.p1.y_change)
+        msgFromCli1 = str(self.p1.rect.x) + ' ' + str(self.p1.rect.y) + ' '
+        msgFromCli2 = ""
+        for bomb in self.bombs:
+            if bomb.x !=0 and bomb.y != 0:
+                msgFromCli2 = msgFromCli2 + str(bomb.x) + ' ' + str(bomb.y) 
+        self.msgFromClient = msgFromCli1 + msgFromCli2
+        self.bytesToSend = str.encode(self.msgFromClient)
+        self.UDPClientSocket.sendto(self.bytesToSend, serverAddressPort)
         pygame.display.update()
 
     def draw_chars(self):
@@ -107,12 +123,15 @@ class Game:
         self.display.fill(constants.WHITE) #cleaning display
         
         self.tiles(self.map1)
+            
         self.display.blit(self.bomberman,(self.p1.rect.x,self.p1.rect.y))
+        self.draw_otherplayers(self.otherPlayers)
 
         if (self.current_time - self.pressb)<3000:
-            self.display.blit(self.bomb,(self.b1.x,self.b1.y))
-        elif((self.current_time - self.pressb)>3000): 
-            pygame.transform.flip(self.bomb,self.b1.x,self.b1.y)   
+            self.display.blit(self.bomb,(self.bombs[self.i].x,self.bombs[self.i].y))
+        elif((self.current_time - self.pressb)>3000 and self.i>= 0 and self.i<4): 
+            pygame.transform.flip(self.bomb,self.bombs[self.i].x,self.bombs[self.i].y)
+            self.i =+ 1
   
         pygame.display.flip()
 
@@ -144,23 +163,24 @@ class Game:
         for x, c in enumerate(line):
             if c == "w":
                 self.display.blit(self.wall2,(x * 30, y * 30))
-                self.tile_rects.append(pygame.Rect(x * 30, y * 30, 30, 30))  
-                
+                self.tile_rects.append(pygame.Rect(x * 30, y * 30, 30, 30))
+            else: self.free_map.append(pygame.Rect(x * 30, y * 30, 30, 30))
 
+    def add_otherplayers(self,n):
+     for x in range(n):
+            self.otherPlayers.append(Player(self.bombermanr,4,0,0))  
+     return self.otherPlayers      
+    
+    def draw_otherplayers(self,otherPlayers):
+     for p in otherPlayers:
+            self.display.blit(self.bomberman,(200,200))    
+                
     def collision_test(self,rect,tiles):
      self.hit_list = []
      for tile in tiles:
         if rect.colliderect(tile):
             self.hit_list.append(tile)    
-     return self.hit_list
-
-    def collision_reset(self,rect,tiles):
-     self.free_map = []
-     for tile in tiles:
-        if not(rect.colliderect(tile)):
-            self.free_map.append(tile)
-     return self.free_map    
-
+     return self.hit_list    
 
 
     def checkColisionsx(self,rect,tiles,x_change):
@@ -185,12 +205,18 @@ class Game:
                  rect.y = self.position.y    
                  y_change = 0
 
+    def bomb_explosion(self,rect,tiles,x_change,y_change):
+        pass             
+
 
     def update(self,rect,tiles,x_change,y_change):
         self.checkColisionsx(rect,tiles,x_change)
         self.checkColisionsy(rect,tiles,y_change)
         rect.x += x_change
         rect.y += y_change
+
+    def clientParse(self):
+        parser = argparse.ArgumentParser(description='Bomberman Game - Grupo 7')    
 
      ##########################################################   
 
@@ -235,12 +261,11 @@ class Player():
         self.x_change = x_change
         self.y_change = y_change  
 
-        
-
 class Bomb():
     def __init__(self,x,y):
         self.x = x
         self.y = y
+
 
 g = Game()
 g.start_dipslay()                            

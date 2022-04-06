@@ -2,6 +2,9 @@
 WIDTH = 870
 HEIGHT = 500
 
+#player position
+parsePos = (0,0)
+
 #Game Title
 GAME_TITLE = 'Bomberman'
 
