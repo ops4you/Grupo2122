@@ -1,11 +1,11 @@
+import pygame
 import socket
+import threading
 
 localIP     = "::1"
-localPort   = 20001
-bufferSize  = 1024
-
-msgFromServer       = "Position Received!"
-bytesToSend         = str.encode(msgFromServer)
+localPort   = 5555
+bufferSize  = 65536
+addresses = []
 
 # Create a datagram socket
 UDPServerSocket = socket.socket(family=socket.AF_INET6, type=socket.SOCK_DGRAM)
@@ -13,16 +13,34 @@ UDPServerSocket = socket.socket(family=socket.AF_INET6, type=socket.SOCK_DGRAM)
 # Bind to address and ip
 UDPServerSocket.bind((localIP, localPort))
 
+def appendAddress(ad,ads):
+ if ((ad in ads) == False):
+  ads.append(ad)
+ return ads 
+
+def sendtoClient(ads,msg):
+ clock = pygame.time.Clock()
+ clock.tick(30)  
+ msgFromServer = msg
+ bytesToSend = str.encode(msgFromServer)
+ for a in ads:
+  UDPServerSocket.sendto(bytesToSend, a)
+
 print("UDP server up and listening")
 
 # Listen for incoming datagrams
 
 while(True):
+    bytesreceivedS = UDPServerSocket.recvfrom(bufferSize)
+    message = bytesreceivedS[0].decode('utf8')
+    address = bytesreceivedS[1]
 
-    bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
-    message = bytesAddressPair[0].decode('utf8')
-    address = bytesAddressPair[1]
+    appendAddress(address,addresses)
+
+    x = threading.Thread(target=sendtoClient(addresses,message), args=(1,))
+    x.start
+
     clientMsg = message + ' ' + str(address)
-    print(clientMsg)
-    # Sending a reply to client
-    UDPServerSocket.sendto(bytesToSend, address)
+    print(address)
+    
+
