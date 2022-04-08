@@ -5,7 +5,6 @@ import socket
 import threading
 import random
 import constants
-import chars
 import os
 
 #String configuration for the map
