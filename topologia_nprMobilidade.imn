@@ -2,15 +2,15 @@ node n7 {
     type router
     model PC
     network-config {
-	hostname Utilizador2
+	hostname UtilizadorA
 	!
 	interface eth0
 	 ipv6 address 2001:690:2280:26::20/64
 	!
     }
     canvas c1
-    iconcoords {346.0 36.0}
-    labelcoords {346.0 68.0}
+    iconcoords {254.0 24.0}
+    labelcoords {254.0 56.0}
     services {DefaultRoute}
     interface-peer {eth0 n9}
 }
@@ -19,15 +19,15 @@ node n8 {
     type router
     model PC
     network-config {
-	hostname Utilizador1
+	hostname UtilizadorB
 	!
 	interface eth0
 	 ipv6 address 2001:690:2280:23::20/64
 	!
     }
     canvas c1
-    iconcoords {77.0 457.0}
-    labelcoords {77.0 489.0}
+    iconcoords {109.0 422.0}
+    labelcoords {109.0 454.0}
     interface-peer {eth0 n3}
 }
 
@@ -42,8 +42,8 @@ node n11 {
 	!
     }
     canvas c1
-    iconcoords {40.0 40.0}
-    labelcoords {40.0 72.0}
+    iconcoords {54.0 46.0}
+    labelcoords {54.0 78.0}
     services {OSPFv3 zebra DefaultRoute SSH}
     custom-config {
 	custom-config-id service:zebra
@@ -78,7 +78,7 @@ node n12 {
 	!
 	interface wireless
 	 ip address 10.0.0.0/32
-	 ipv6 address 2001:690:2280:28::0/64
+	 ipv6 address 2001:690:2280:28::0/128
 	!
 	mobmodel
 	coreapi
@@ -112,12 +112,10 @@ node n12 {
 	}
     }
     canvas c1
-    iconcoords {150.0 27.0}
-    labelcoords {150.0 59.0}
+    iconcoords {140.0 42.0}
+    labelcoords {140.0 74.0}
     interface-peer {e0 n10}
     interface-peer {e1 n4}
-    interface-peer {e2 n6}
-    interface-peer {e5 n18}
     interface-peer {e6 n14}
     interface-peer {e7 n15}
     interface-peer {e8 n16}
@@ -158,39 +156,23 @@ node n1 {
 	interface eth0
 	  
 	  ipv6 address 2001:690:2280:20::1/64
-	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 flood-delay 200
 	  ipv6 ospf6 network point-to-point
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
 	!
 	interface eth1
 	  
 	  ipv6 address 2001:690:2280:21::1/64
-	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 flood-delay 100
 	  ipv6 ospf6 network point-to-point
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
 	
 	!
 	interface eth2
 	 
 	  ipv6 address 2001:690:2280:24::1/64
-	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 flood-delay 100
 	  ipv6 ospf6 network point-to-point
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
 	!
 	router ospf6
-	  instance-id 0
 	  router-id 0.0.0.1
 	  redistribute connected
 	  interface eth0 area 0.0.0.0
@@ -219,8 +201,8 @@ node n2 {
 	!
     }
     canvas c1
-    iconcoords {81.0 252.0}
-    labelcoords {81.0 284.0}
+    iconcoords {55.0 298.0}
+    labelcoords {55.0 330.0}
     services {OSPFv3 zebra IPForward}
     custom-config {
 	custom-config-id service:zebra
@@ -236,27 +218,16 @@ node n2 {
 	interface eth0
 	  
 	  ipv6 address 2001:690:2280:21::2/64
-	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 flood-delay 200
 	  ipv6 ospf6 network point-to-point
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
 	!
 	interface eth1
 	  
 	  ipv6 address 2001:690:2280:22::1/64
-	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 flood-delay 200
 	  ipv6 ospf6 network point-to-point
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
 	!
 	router ospf6
-	  instance-id 0
 	  redistribute connected
 	  router-id 0.0.0.2
 	  interface eth0 area 0.0.0.0
@@ -286,8 +257,8 @@ node n3 {
 	!
     }
     canvas c1
-    iconcoords {155.0 372.0}
-    labelcoords {155.0 404.0}
+    iconcoords {204.0 338.0}
+    labelcoords {204.0 370.0}
     services {OSPFv3 zebra IPForward}
     custom-config {
 	custom-config-id service:zebra
@@ -303,38 +274,22 @@ node n3 {
 	interface eth0
 	  
 	  ipv6 address 2001:690:2280:22::2/64
-	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 flood-delay 200
 	  ipv6 ospf6 network point-to-point
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
 	!
 	interface eth1
 	  
 	  ipv6 address 2001:690:2280:23::1/64
-	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 flood-delay 200
 	  ipv6 ospf6 network point-to-point
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
 	!
 	interface eth2
 	  
 	  ipv6 address 2001:690:2280:27::1/64
-	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 flood-delay 200
 	  ipv6 ospf6 network point-to-point
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
 	!
 	router ospf6
-	  instance-id 0
 	  redistribute connected
 	  router-id 0.0.0.3
 	  interface eth0 area 0.0.0.0
@@ -353,18 +308,18 @@ node n4 {
     type router
     model router
     network-config {
-	hostname RW1
+	hostname RW2
+	!
+	interface eth1
+	 ipv6 address 2001:690:2280:28::2/128
 	!
 	interface eth0
 	 ipv6 address 2001:690:2280:27::2/64
 	!
-	interface eth1
-	 ipv6 address 2001:690:2280:28::2/64
-	!
     }
     canvas c1
-    iconcoords {363.0 406.0}
-    labelcoords {363.0 438.0}
+    iconcoords {368.0 455.0}
+    labelcoords {368.0 487.0}
     interface-peer {eth1 n12}
     services {OSPFv3 zebra IPForward}
     custom-config {
@@ -381,43 +336,22 @@ node n4 {
 	interface eth0
 	  
 	  ipv6 address 2001:690:2280:27::2/64
-	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 flood-delay 100
 	  ipv6 ospf6 network point-to-point
-	  ipv6 ospf6 network manet-designated-router
-	  ipv6 ospf6 twohoprefresh 3
 	  ipv6 ospf6 adjacencyconnectivity uniconnected
 	  ipv6 ospf6 lsafullness mincostlsa
 	!
 	interface eth1
 	  
-	  ipv6 address 2001:690:2280:28::2/64
-	  ipv6 nd suppress-ra
+	  ipv6 address 2001:690:2280:28::2/128
 	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 flood-delay 100
 	  ipv6 ospf6 network point-to-point
 	  ipv6 ospf6 network manet-designated-router
-	  ipv6 ospf6 twohoprefresh 3
-	  ipv6 ospf6 adjacencyconnectivity uniconnected
-	  ipv6 ospf6 lsafullness mincostlsa
-	!
-	
-	interface eth2
-	  
-	  ipv6 address 2001:690:2280:28::1/64
-	  ipv6 nd suppress-ra
-	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 flood-delay 100
-	  ipv6 ospf6 network point-to-point
-	  ipv6 ospf6 network manet-designated-router
-	  ipv6 ospf6 twohoprefresh 3
 	  ipv6 ospf6 adjacencyconnectivity uniconnected
 	  ipv6 ospf6 lsafullness mincostlsa
 	!
 	
 	router ospf6
-	  instance-id 0
 	  redistribute connected
 	  router-id 0.0.0.4
 	  interface eth0 area 0.0.0.0
@@ -443,8 +377,8 @@ node n5 {
 	!
     }
     canvas c1
-    iconcoords {233.0 225.0}
-    labelcoords {233.0 257.0}
+    iconcoords {176.0 213.0}
+    labelcoords {176.0 245.0}
     services {OSPFv3 zebra IPForward}
     custom-config {
 	custom-config-id service:zebra
@@ -460,27 +394,16 @@ node n5 {
 	interface eth0
 	  
 	  ipv6 address 2001:690:2280:24::2/64
-	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 flood-delay 200
 	  ipv6 ospf6 network point-to-point
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
 	!
 	interface eth1
 	  
 	  ipv6 address 2001:690:2280:25::1/64
-	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 flood-delay 200
 	  ipv6 ospf6 network point-to-point
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
 	!
 	router ospf6
-	  instance-id 0
 	  redistribute connected
 	  router-id 0.0.0.5
 	  interface eth0 area 0.0.0.0
@@ -493,60 +416,14 @@ node n5 {
     interface-peer {eth1 n9}
 }
 
-node n6 {
-    type router
-    model router
-    network-config {
-	hostname n6
-	!
-	interface eth0
-	 ipv6 address 2001:690:2280:28::3/64
-	!
-    }
-    canvas c1
-    iconcoords {343.0 299.0}
-    labelcoords {343.0 331.0}
-    services {OSPFv3 zebra IPForward}
-    interface-peer {eth0 n12}
-    custom-config {
-	custom-config-id service:zebra
-	custom-command zebra
-	config {
-	files=('/usr/local/etc/quagga/Quagga.conf', 'quaggaboot.sh', '/usr/local/etc/quagga/vtysh.conf', )
-	}
-    }
-    custom-config {
-	custom-config-id service:zebra:/usr/local/etc/quagga/Quagga.conf
-	custom-command /usr/local/etc/quagga/Quagga.conf
-	config {
-	interface eth0
-	  
-	  ipv6 address 2001:690:2280:28::3/64
-	  ipv6 nd suppress-ra
-	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
-	  ipv6 ospf6 network manet-designated-router
-	  ipv6 ospf6 twohoprefresh 3
-	  ipv6 ospf6 adjacencyconnectivity uniconnected
-	  ipv6 ospf6 lsafullness mincostlsa
-	!
-	router ospf6
-	  instance-id 0
-	  router-id 0.0.0.6
-	  interface eth0 area 0.0.0.0
-	!
-	
-	}
-    }
-}
-
 node n9 {
     type router
     model router
     network-config {
 	hostname n9
+	!
+	interface eth2
+	 ipv6 address 2001:690:2280:20::1/64
 	!
 	interface eth1
 	 ipv6 address 2001:690:2280:26::1/64
@@ -556,8 +433,8 @@ node n9 {
 	!
     }
     canvas c1
-    iconcoords {346.0 143.0}
-    labelcoords {346.0 175.0}
+    iconcoords {326.0 163.0}
+    labelcoords {326.0 195.0}
     services {OSPFv3 zebra IPForward}
     custom-config {
 	custom-config-id service:zebra
@@ -573,28 +450,17 @@ node n9 {
 	interface eth0
 	  
 	  ipv6 address 2001:690:2280:25::2/64
-	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 flood-delay 200
 	  ipv6 ospf6 network point-to-point
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
 	
 	!
 	interface eth1
 	  
 	  ipv6 address 2001:690:2280:26::1/64
-	  ipv6 nd suppress-ra
 	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 flood-delay 200
 	  ipv6 ospf6 network point-to-point
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
 	!
 	router ospf6
-	  instance-id 0
 	  redistribute connected
 	  router-id 0.0.0.9
 	  interface eth0 area 0.0.0.0
@@ -605,6 +471,7 @@ node n9 {
     }
     interface-peer {eth0 n5}
     interface-peer {eth1 n7}
+    interface-peer {eth2 n17}
 }
 
 node n10 {
@@ -614,12 +481,12 @@ node n10 {
 	hostname RWireless
 	!
 	interface eth0
-	 ipv6 address 2001:690:2280:28::1/64
+	 ipv6 address 2001:690:2280:28::1/128
 	!
     }
     canvas c1
-    iconcoords {191.0 95.0}
-    labelcoords {191.0 127.0}
+    iconcoords {275.0 272.0}
+    labelcoords {275.0 304.0}
     interface-peer {eth0 n12}
     services {OSPFv3 zebra IPForward}
     custom-config {
@@ -634,18 +501,14 @@ node n10 {
 	custom-command /usr/local/etc/quagga/Quagga.conf
 	config {
 	interface eth0
-	
-	  ipv6 nd suppress-ra
+	  ipv6 address 2001:690:2280:28::1/128
 	  ipv6 ospf6 network broadcast
-	  ipv6 address 2001:690:2280:28::1/64
 	  ipv6 ospf6 network point-to-point
-	  ipv6 ospf6 network manet-designated-router
-	  ipv6 ospf6 twohoprefresh 3
 	  ipv6 ospf6 adjacencyconnectivity uniconnected
 	  ipv6 ospf6 lsafullness mincostlsa
+	  ipv6 ospf6 network manet-designated-router
 	!
 	router ospf6
-	  instance-id 0
 	  redistribute connected
 	  router-id 0
 	  interface eth0 area 0.0.0.0
@@ -662,7 +525,7 @@ node n14 {
 	hostname V1
 	!
 	interface eth0
-	 ipv6 address 2001:690:2280:28::7/64
+	 ipv6 address 2001:690:2280:28::5/128
 	!
     }
     canvas c1
@@ -683,18 +546,13 @@ node n14 {
 	config {
 	interface eth0
 	  
-	  ipv6 address 2001:690:2280:28::7/64
+	  ipv6 address 2001:690:2280:28::5/128
 	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
 	  ipv6 ospf6 network manet-designated-router
-	  ipv6 ospf6 twohoprefresh 3
 	  ipv6 ospf6 adjacencyconnectivity uniconnected
 	  ipv6 ospf6 lsafullness mincostlsa
 	!
 	router ospf6
-	  instance-id 0
 	  redistribute connected
 	  router-id 0.0.0.14
 	  interface eth0 area 0.0.0.0
@@ -711,7 +569,7 @@ node n15 {
 	hostname v15
 	!
 	interface eth0
-	 ipv6 address 2001:690:2280:28::8/64
+	 ipv6 address 2001:690:2280:28::6/128
 	!
     }
     canvas c1
@@ -731,18 +589,12 @@ node n15 {
 	config {
 	interface eth0
 	  
-	  ipv6 address 2001:690:2280:28::8/64
-	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
+	  ipv6 address 2001:690:2280:28::6/128
 	  ipv6 ospf6 network manet-designated-router
-	  ipv6 ospf6 twohoprefresh 3
 	  ipv6 ospf6 adjacencyconnectivity uniconnected
 	  ipv6 ospf6 lsafullness mincostlsa
 	!
 	router ospf6
-	  instance-id 0
 	  redistribute connected
 	  router-id 0.0.0.15
 	  interface eth0 area 0.0.0.0
@@ -760,7 +612,7 @@ node n16 {
 	hostname n16
 	!
 	interface eth0
-	 ipv6 address 2001:690:2280:28::9/64
+	 ipv6 address 2001:690:2280:28::7/128
 	!
     }
     canvas c1
@@ -780,18 +632,13 @@ node n16 {
 	config {
 	interface eth0
 	  
-	  ipv6 address 2001:690:2280:28::9/64
+	  ipv6 address 2001:690:2280:28::7/128
 	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
 	  ipv6 ospf6 network manet-designated-router
-	  ipv6 ospf6 twohoprefresh 3
 	  ipv6 ospf6 adjacencyconnectivity uniconnected
 	  ipv6 ospf6 lsafullness mincostlsa
 	!
 	router ospf6
-	  instance-id 0
 	  redistribute connected
 	  router-id 0.0.0.20
 	  interface eth0 area 0.0.0.0
@@ -802,70 +649,6 @@ node n16 {
     services {OSPFv3MDR zebra IPForward}
 }
 
-node n18 {
-    type router
-    model mdr
-    network-config {
-	hostname V2
-	!
-	interface eth0
-	 ipv6 address 2001:690:2280:28::6/128
-	!
-    }
-    canvas c1
-    iconcoords {572.0 446.0}
-    labelcoords {572.0 478.0}
-    interface-peer {eth0 n12}
-    services {OSPFv3MDR zebra IPForward}
-    custom-config {
-	custom-config-id service:zebra
-	custom-command zebra
-	config {
-	files=('/usr/local/etc/quagga/Quagga.conf', 'quaggaboot.sh', '/usr/local/etc/quagga/vtysh.conf', )
-	}
-    }
-    custom-config {
-	custom-config-id service:zebra:/usr/local/etc/quagga/Quagga.conf
-	custom-command /usr/local/etc/quagga/Quagga.conf
-	config {
-	interface eth0
-	  
-	  ipv6 address 2001:690:2280:28::6/64
-	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
-	  ipv6 ospf6 network manet-designated-router
-	  ipv6 ospf6 twohoprefresh 3
-	  ipv6 ospf6 adjacencyconnectivity uniconnected
-	  ipv6 ospf6 lsafullness mincostlsa
-	!
-	interface eth1
-	  
-	  ipv6 address 2001:690:2280:28::2/64
-	  ipv6 ospf6 network broadcast
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
-	  ipv6 ospf6 network manet-designated-router
-	  ipv6 ospf6 twohoprefresh 3
-	  ipv6 ospf6 adjacencyconnectivity uniconnected
-	  ipv6 ospf6 lsafullness mincostlsa
-	!
-	router ospf6
-	  instance-id 0
-	  redistribute connected
-	  redistribute ospf
-	  redistribute ospf6
-	  router-id 0.0.0.18
-	  interface eth0 area 0.0.0.0
-	  interface eth1 area 0.0.0.0
-	!
-	
-	}
-    }
-}
-
 node n13 {
     type router
     model mdr
@@ -873,7 +656,7 @@ node n13 {
 	hostname n13
 	!
 	interface eth0
-	 ipv6 address 2001:690:2280:28::4/64
+	 ipv6 address 2001:690:2280:28::8/128
 	!
     }
     canvas c1
@@ -893,17 +676,13 @@ node n13 {
 	config {
 	interface eth0
 	
-	  ipv6 address 2001:690:2280:28::4/64
-	  ipv6 ospf6 hello-interval 2
-	  ipv6 ospf6 dead-interval 6
-	  ipv6 ospf6 retransmit-interval 5
+	  ipv6 address 2001:690:2280:28::8/128
 	  ipv6 ospf6 network manet-designated-router
-	  ipv6 ospf6 twohoprefresh 3
 	  ipv6 ospf6 adjacencyconnectivity uniconnected
 	  ipv6 ospf6 lsafullness mincostlsa
 	!
 	router ospf6
-	  instance-id 0
+	  redistribute connected
 	  router-id 10.0.0.0
 	  interface eth0 area 0.0.0.0
 	!
@@ -913,20 +692,28 @@ node n13 {
     services {OSPFv3MDR zebra IPForward}
 }
 
+node n17 {
+    type router
+    model PC
+    network-config {
+	hostname UtilizadorC
+	!
+	interface eth0
+	 ipv6 address 2001:690:2280:20::20/64
+	!
+    }
+    canvas c1
+    iconcoords {377.0 35.0}
+    labelcoords {377.0 67.0}
+    interface-peer {eth0 n9}
+}
+
 link l9 {
     nodes {n12 n10}
 }
 
 link l10 {
     nodes {n12 n4}
-}
-
-link l11 {
-    nodes {n12 n6}
-}
-
-link l14 {
-    nodes {n12 n18}
 }
 
 link l15 {
@@ -983,6 +770,11 @@ link l8 {
 
 link l12 {
     nodes {n12 n13}
+}
+
+link l13 {
+    nodes {n9 n17}
+    bandwidth 0
 }
 
 annotation a1 {
