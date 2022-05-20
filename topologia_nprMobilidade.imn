@@ -101,7 +101,7 @@ node n12 {
 	custom-config-id ns2script
 	custom-command {10 3 11 10 10 10 10 10}
 	config {
-	file=/home/diogo/Downloads/core/gui/configs/sample1.scen
+	file=/home/diogo/Downloads/Grupo2122-main/CenarioMobilidadeDTN.scen
 	refresh_ms=50
 	loop=1
 	autostart=

@@ -2,7 +2,7 @@ import pygame
 import socket
 import threading
 
-localIP     = "::1"
+localIP     = "2001:690:2280:20::10"
 localPort   = 5555
 bufferSize  = 65536
 addresses = []
@@ -20,7 +20,7 @@ def appendAddress(ad,ads):
 
 def sendtoClient(ads,msg):
  clock = pygame.time.Clock()
- clock.tick(30)  
+ clock.tick(15)  
  msgFromServer = msg
  bytesToSend = str.encode(msgFromServer)
  for a in ads:
@@ -41,6 +41,6 @@ while(True):
     x.start
 
     clientMsg = message + ' ' + str(address)
-    print(address)
+    print(clientMsg)
     
 

@@ -26,7 +26,7 @@ wwwwwwwwwwwwwwwwwwwwwwwwwwwww"""
 
 #Server info
 player_id = 0
-serverAddress = "::1"
+serverAddress = "2001:690:2280:20::10"
 serverPort = 5555
 bufferSize = 65536
 
@@ -47,7 +47,7 @@ class Game:
         self.running = True
         self.font = pygame.font.match_font(constants.FONT)
         self.load_files()
-        self.otherplayers = []
+        self.otherplayers = {}
         self.p1 = Player(0,self.bomberman.get_rect(),4,0,0)
         self.p1.rect.x = 100
         self.p1.rect.y = 100
@@ -68,11 +68,12 @@ class Game:
     def run(self):
         self.playing = True
         while self.playing:
-            self.clock.tick(30)  
+            self.clock.tick(15)  
             self.current_time = pygame.time.get_ticks()
             self.events()
             self.update_chars()
             self.draw_chars()
+            print(self.otherplayers)
 
     #Define game events
     def events(self):
@@ -83,13 +84,13 @@ class Game:
                 self.running = False  
             if event.type == pygame.KEYDOWN: 
                 if event.key == pygame.K_LEFT:
-                    self.p1.x_change = -2
+                    self.p1.x_change = -3
                 if event.key == pygame.K_RIGHT:
-                    self.p1.x_change = 2
+                    self.p1.x_change = 3
                 if event.key == pygame.K_UP:
-                    self.p1.y_change = -2
+                    self.p1.y_change = -3
                 if event.key == pygame.K_DOWN:
-                    self.p1.y_change = 2
+                    self.p1.y_change = 3
                 if event.key == pygame.K_SPACE: 
                     if(self.p1.bombs>0 and self.i>=0 and self.i<4):
                          self.pressb = pygame.time.get_ticks()
@@ -121,7 +122,6 @@ class Game:
         
         self.tiles(self.map1)
             
-        self.display.blit(self.bomberman,(self.p1.rect.x,self.p1.rect.y))
         self.draw_otherplayers(self.otherplayers)
 
         if (self.current_time - self.pressb)<3000:
@@ -162,8 +162,9 @@ class Game:
                 self.display.blit(self.wall,(x * 30, y * 30))
     #Draw other players
     def draw_otherplayers(self,otherPlayers):
-     for p in otherPlayers:
-            self.display.blit(self.bomberman,(p.rect.x,p.rect.y))           
+     x = list(otherPlayers.values())
+     for p in x:
+            self.display.blit(self.bomberman,(p.rect.x,p.rect.y))    
                 
     def collision_test(self,rect,tiles):
      self.hit_list = []
@@ -221,23 +222,14 @@ class Game:
     def game_received(self):
         bytesrecievedC = UDPClientSocket.recvfrom(bufferSize)
         message = bytesrecievedC[0].decode('utf8')
-        address = bytesrecievedC[1]
-        update = message.split(" ")
-        if update[0] != player_id:
-            if len(self.otherplayers) == 0: 
-                p = Player(update[0],self.bomberman.get_rect(),4,0,0)
-                p.rect.x = int(update[1])
-                p.rect.y = int(update[2])
-                self.otherplayers.append(p)
-            for player in self.otherplayers:
-               if update[0] != player.id: 
-                p = Player(update[0],self.bomberman.get_rect(),4,0,0)
-                p.rect.x = int(update[1])
-                p.rect.y = int(update[2])
-                self.otherplayers.append(p)
-               elif update[0] == player.id:
-                player.rect.x = int(update[1]) 
-                player.rect.y = int(update[2])  
+        update_id = message.split(" ")
+        player = self.otherplayers.get(update_id[0])
+        if player != player_id:
+            p = Player(update_id[0],self.bomberman.get_rect(),4,0,0)
+            p.rect.x = int(update_id[1])
+            p.rect.y = int(update_id[2])
+            self.otherplayers.update({update_id[0]: p})
+
 
     #Show some text on the display
     def show_text(self, text, size, color, x, y):
