@@ -5,14 +5,14 @@ node n7 {
 	hostname UtilizadorA
 	!
 	interface eth0
-	 ipv6 address 2001:690:2280:26::20/64
+	 ipv6 address 2001:690:2280:20::20/64
 	!
     }
     canvas c1
-    iconcoords {254.0 24.0}
-    labelcoords {254.0 56.0}
+    iconcoords {269.0 36.0}
+    labelcoords {269.0 68.0}
     services {DefaultRoute}
-    interface-peer {eth0 n9}
+    interface-peer {eth0 n6}
 }
 
 node n8 {
@@ -26,8 +26,8 @@ node n8 {
 	!
     }
     canvas c1
-    iconcoords {109.0 422.0}
-    labelcoords {109.0 454.0}
+    iconcoords {106.0 461.0}
+    labelcoords {106.0 493.0}
     interface-peer {eth0 n3}
 }
 
@@ -42,8 +42,8 @@ node n11 {
 	!
     }
     canvas c1
-    iconcoords {54.0 46.0}
-    labelcoords {54.0 78.0}
+    iconcoords {51.0 39.0}
+    labelcoords {51.0 71.0}
     services {OSPFv3 zebra DefaultRoute SSH}
     custom-config {
 	custom-config-id service:zebra
@@ -112,8 +112,8 @@ node n12 {
 	}
     }
     canvas c1
-    iconcoords {140.0 42.0}
-    labelcoords {140.0 74.0}
+    iconcoords {155.0 36.0}
+    labelcoords {155.0 68.0}
     interface-peer {e0 n10}
     interface-peer {e1 n4}
     interface-peer {e6 n14}
@@ -139,8 +139,8 @@ node n1 {
 	!
     }
     canvas c1
-    iconcoords {60.0 150.0}
-    labelcoords {60.0 182.0}
+    iconcoords {64.0 185.0}
+    labelcoords {64.0 217.0}
     services {OSPFv3 zebra IPForward}
     custom-config {
 	custom-config-id service:zebra
@@ -201,8 +201,8 @@ node n2 {
 	!
     }
     canvas c1
-    iconcoords {55.0 298.0}
-    labelcoords {55.0 330.0}
+    iconcoords {71.0 297.0}
+    labelcoords {71.0 329.0}
     services {OSPFv3 zebra IPForward}
     custom-config {
 	custom-config-id service:zebra
@@ -257,8 +257,8 @@ node n3 {
 	!
     }
     canvas c1
-    iconcoords {204.0 338.0}
-    labelcoords {204.0 370.0}
+    iconcoords {217.0 346.0}
+    labelcoords {217.0 378.0}
     services {OSPFv3 zebra IPForward}
     custom-config {
 	custom-config-id service:zebra
@@ -377,8 +377,8 @@ node n5 {
 	!
     }
     canvas c1
-    iconcoords {176.0 213.0}
-    labelcoords {176.0 245.0}
+    iconcoords {296.0 237.0}
+    labelcoords {296.0 269.0}
     services {OSPFv3 zebra IPForward}
     custom-config {
 	custom-config-id service:zebra
@@ -422,19 +422,16 @@ node n9 {
     network-config {
 	hostname n9
 	!
-	interface eth2
+	interface eth3
 	 ipv6 address 2001:690:2280:20::1/64
-	!
-	interface eth1
-	 ipv6 address 2001:690:2280:26::1/64
 	!
 	interface eth0
 	 ipv6 address 2001:690:2280:25::2/64
 	!
     }
     canvas c1
-    iconcoords {326.0 163.0}
-    labelcoords {326.0 195.0}
+    iconcoords {205.0 136.0}
+    labelcoords {205.0 168.0}
     services {OSPFv3 zebra IPForward}
     custom-config {
 	custom-config-id service:zebra
@@ -470,8 +467,7 @@ node n9 {
 	}
     }
     interface-peer {eth0 n5}
-    interface-peer {eth1 n7}
-    interface-peer {eth2 n17}
+    interface-peer {eth3 n6}
 }
 
 node n10 {
@@ -485,8 +481,8 @@ node n10 {
 	!
     }
     canvas c1
-    iconcoords {275.0 272.0}
-    labelcoords {275.0 304.0}
+    iconcoords {359.0 326.0}
+    labelcoords {359.0 358.0}
     interface-peer {eth0 n12}
     services {OSPFv3 zebra IPForward}
     custom-config {
@@ -522,7 +518,7 @@ node n14 {
     type router
     model mdr
     network-config {
-	hostname V1
+	hostname VM1
 	!
 	interface eth0
 	 ipv6 address 2001:690:2280:28::5/128
@@ -566,7 +562,7 @@ node n15 {
     type router
     model mdr
     network-config {
-	hostname v15
+	hostname VM2
 	!
 	interface eth0
 	 ipv6 address 2001:690:2280:28::6/128
@@ -699,13 +695,27 @@ node n17 {
 	hostname UtilizadorC
 	!
 	interface eth0
-	 ipv6 address 2001:690:2280:20::20/64
+	 ipv6 address 2001:690:2280:20::21/64
 	!
     }
     canvas c1
-    iconcoords {377.0 35.0}
-    labelcoords {377.0 67.0}
-    interface-peer {eth0 n9}
+    iconcoords {373.0 35.0}
+    labelcoords {373.0 67.0}
+    interface-peer {eth0 n6}
+}
+
+node n6 {
+    type lanswitch
+    network-config {
+	hostname Switch
+	!
+    }
+    canvas c1
+    iconcoords {346.0 137.0}
+    labelcoords {346.0 161.0}
+    interface-peer {e0 n9}
+    interface-peer {e1 n7}
+    interface-peer {e2 n17}
 }
 
 link l9 {
@@ -758,11 +768,6 @@ link l6 {
     bandwidth 0
 }
 
-link l7 {
-    nodes {n9 n7}
-    bandwidth 0
-}
-
 link l8 {
     nodes {n3 n4}
     bandwidth 0
@@ -772,8 +777,18 @@ link l12 {
     nodes {n12 n13}
 }
 
+link l11 {
+    nodes {n9 n6}
+    bandwidth 0
+}
+
+link l7 {
+    nodes {n6 n7}
+    bandwidth 0
+}
+
 link l13 {
-    nodes {n9 n17}
+    nodes {n6 n17}
     bandwidth 0
 }
 
