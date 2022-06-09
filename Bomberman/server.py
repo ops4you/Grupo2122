@@ -1,3 +1,4 @@
+import time
 import pygame
 import socket
 import threading
@@ -20,7 +21,7 @@ def appendAddress(ad,ads):
 
 def sendtoClient(ads,msg):
  clock = pygame.time.Clock()
- clock.tick(15)  
+ clock.tick(60)  
  msgFromServer = msg
  bytesToSend = str.encode(msgFromServer)
  for a in ads:
@@ -41,6 +42,6 @@ while(True):
     x.start
 
     clientMsg = message + ' ' + str(address)
-    print(clientMsg)
+  
     
 

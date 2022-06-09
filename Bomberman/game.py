@@ -6,6 +6,7 @@ import threading
 import random
 import constants
 import os
+import time
 
 #String configuration for the map
 map1 ="""                                   
@@ -25,7 +26,7 @@ w---------------------------w
 wwwwwwwwwwwwwwwwwwwwwwwwwwwww"""
 
 #Server info
-player_id = 0
+player_ip = "::1"
 serverAddress = "2001:690:2280:20::10"
 serverPort = 5555
 bufferSize = 65536
@@ -68,12 +69,11 @@ class Game:
     def run(self):
         self.playing = True
         while self.playing:
-            self.clock.tick(15)  
+            self.clock.tick(30)  
             self.current_time = pygame.time.get_ticks()
             self.events()
             self.update_chars()
             self.draw_chars()
-            print(self.otherplayers)
 
     #Define game events
     def events(self):
@@ -107,6 +107,9 @@ class Game:
                     self.p1.y_change = 0
                if event.key == pygame.K_DOWN: 
                     self.p1.y_change = 0  
+
+            if event.type == pygame.QUIT:
+                self.running = False        
     
     #Update chars
     def update_chars(self):
@@ -160,6 +163,7 @@ class Game:
                 self.tile_rects.append(pygame.Rect(x * 30, y * 30, 30, 30))
             elif c == '-': 
                 self.display.blit(self.wall,(x * 30, y * 30))
+    
     #Draw other players
     def draw_otherplayers(self,otherPlayers):
      x = list(otherPlayers.values())
@@ -209,7 +213,7 @@ class Game:
     #Messages from client to server
     def game_update_server(self):
         serverAddressPort = (serverAddress, serverPort)
-        msgFromCli1 = player_id + ' ' + str(self.p1.rect.x) + ' ' + str(self.p1.rect.y) + ' '
+        msgFromCli1 = player_ip + ',' + str(clientport) + ' ' + str(self.p1.rect.x) + ' ' + str(self.p1.rect.y) + ' '
         msgFromCli2 = ""
         for bomb in self.bombs:
             if bomb.x !=0 and bomb.y != 0:
@@ -222,13 +226,11 @@ class Game:
     def game_received(self):
         bytesrecievedC = UDPClientSocket.recvfrom(bufferSize)
         message = bytesrecievedC[0].decode('utf8')
-        update_id = message.split(" ")
-        player = self.otherplayers.get(update_id[0])
-        if player != player_id:
-            p = Player(update_id[0],self.bomberman.get_rect(),4,0,0)
-            p.rect.x = int(update_id[1])
-            p.rect.y = int(update_id[2])
-            self.otherplayers.update({update_id[0]: p})
+        update_ip = message.split(" ")
+        p = Player(update_ip[0],self.bomberman.get_rect(),4,0,0)
+        p.rect.x = int(update_ip[1])
+        p.rect.y = int(update_ip[2])
+        self.otherplayers.update({update_ip[0]: p})
 
 
     #Show some text on the display
@@ -256,7 +258,7 @@ class Game:
     def waiting_for_players(self):
         waiting = True
         while waiting:
-            self.clock.tick(30)
+            self.clock.tick(60)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     waiting = False 
@@ -272,8 +274,8 @@ class Game:
 
 #Player class
 class Player():
-    def __init__(self,id,rect,bombs,x_change,y_change):
-        self.id = id
+    def __init__(self,ip_port,rect,bombs,x_change,y_change):
+        self.ip_port = ip_port
         self.rect = rect
         self.bombs = bombs
         self.x_change = x_change
@@ -291,10 +293,10 @@ class Bomb():
 def clientParse():
         parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)    
 
-        parser.add_argument('id', type=str,
-                    help='Client ID')
+        parser.add_argument('ip', type=str,
+                    help='Client IP')
 
-        parser.add_argument('-ip', type=str,
+        parser.add_argument('-ipS', type=str,
                     help='IPv6 Address' , default="::1")
 
         parser.add_argument('-sport', type=int,
@@ -304,17 +306,16 @@ def clientParse():
                     help='Client Port', default="5553")            
 
         args = parser.parse_args()
-        return(args.id,args.ip,args.sport,args.cport)
+        return(args.ip,args.ipS,args.sport,args.cport)
 
 ######################################################### 
 
 #Main functions      
  
-player_id,serverAddress,serverPort,clientport = clientParse()
+player_ip,serverAddress,serverPort,clientport = clientParse()
 UDPClientSocket.bind(("::1",clientport))
 g = Game()
-g.start_dipslay()                            
-
+                        
 while g.running:
     g.new_game()
     g.game_over_display()
