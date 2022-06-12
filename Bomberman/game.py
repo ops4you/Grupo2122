@@ -7,6 +7,8 @@ import random
 import constants
 import os
 import time
+import caracters
+import argument_parsers
 
 #String configuration for the map
 map1 ="""                                   
@@ -25,9 +27,10 @@ w-----w--------------ww-w---w
 w---------------------------w
 wwwwwwwwwwwwwwwwwwwwwwwwwwwww"""
 
+
 #Server info
 player_ip = "::1"
-serverAddress = "2001:690:2280:20::10"
+serverAddress = "::1"
 serverPort = 5555
 bufferSize = 65536
 
@@ -48,11 +51,11 @@ class Game:
         self.running = True
         self.font = pygame.font.match_font(constants.FONT)
         self.load_files()
-        self.otherplayers = {}
-        self.p1 = Player(0,self.bomberman.get_rect(),4,0,0)
+        self.players = {}
+        self.p1 = caracters.Player(0,self.bomberman.get_rect(),4,0,0)
         self.p1.rect.x = 100
         self.p1.rect.y = 100
-        self.bombs = [Bomb(0,0),Bomb(0,0),Bomb(0,0),Bomb(0,0)]
+        self.bombs = [caracters.Bomb(0,0),caracters.Bomb(0,0),caracters.Bomb(0,0),caracters.Bomb(0,0)]
         self.i = 0
         self.position = pygame.math.Vector2(0,0) 
         self.pressb = -5000000000
@@ -69,7 +72,7 @@ class Game:
     def run(self):
         self.playing = True
         while self.playing:
-            self.clock.tick(30)  
+            self.clock.tick(15)  
             self.current_time = pygame.time.get_ticks()
             self.events()
             self.update_chars()
@@ -84,13 +87,13 @@ class Game:
                 self.running = False  
             if event.type == pygame.KEYDOWN: 
                 if event.key == pygame.K_LEFT:
-                    self.p1.x_change = -3
+                    self.p1.x_change = -5
                 if event.key == pygame.K_RIGHT:
-                    self.p1.x_change = 3
+                    self.p1.x_change = 5
                 if event.key == pygame.K_UP:
-                    self.p1.y_change = -3
+                    self.p1.y_change = -5
                 if event.key == pygame.K_DOWN:
-                    self.p1.y_change = 3
+                    self.p1.y_change = 5
                 if event.key == pygame.K_SPACE: 
                     if(self.p1.bombs>0 and self.i>=0 and self.i<4):
                          self.pressb = pygame.time.get_ticks()
@@ -125,7 +128,7 @@ class Game:
         
         self.tiles(self.map1)
             
-        self.draw_otherplayers(self.otherplayers)
+        self.draw_players(self.players)
 
         if (self.current_time - self.pressb)<3000:
             self.display.blit(self.bomb,(self.bombs[self.i].x,self.bombs[self.i].y))
@@ -164,9 +167,9 @@ class Game:
             elif c == '-': 
                 self.display.blit(self.wall,(x * 30, y * 30))
     
-    #Draw other players
-    def draw_otherplayers(self,otherPlayers):
-     x = list(otherPlayers.values())
+    #Draw players
+    def draw_players(self,players):
+     x = list(players.values())
      for p in x:
             self.display.blit(self.bomberman,(p.rect.x,p.rect.y))    
                 
@@ -206,7 +209,7 @@ class Game:
         rect.x += x_change
         rect.y += y_change
 
-    ########################################################## 
+###########################################################################################
 
     #NETWORK
        
@@ -227,11 +230,12 @@ class Game:
         bytesrecievedC = UDPClientSocket.recvfrom(bufferSize)
         message = bytesrecievedC[0].decode('utf8')
         update_ip = message.split(" ")
-        p = Player(update_ip[0],self.bomberman.get_rect(),4,0,0)
+        p = caracters.Player(update_ip[0],self.bomberman.get_rect(),4,0,0)
         p.rect.x = int(update_ip[1])
         p.rect.y = int(update_ip[2])
-        self.otherplayers.update({update_ip[0]: p})
+        self.players.update({update_ip[0]: p})
 
+###########################################################################################
 
     #Show some text on the display
     def show_text(self, text, size, color, x, y):
@@ -264,61 +268,16 @@ class Game:
                     waiting = False 
                     self.running = False   
                 if event.type == pygame.KEYUP:
-                    waiting = False  
+                    waiting = False          
 
-    #Game Over Display
-    def game_over_display(self):
-        pass             
-
-###########################################################
-
-#Player class
-class Player():
-    def __init__(self,ip_port,rect,bombs,x_change,y_change):
-        self.ip_port = ip_port
-        self.rect = rect
-        self.bombs = bombs
-        self.x_change = x_change
-        self.y_change = y_change  
-
-#Bomb class
-class Bomb():
-    def __init__(self,x,y):
-        self.x = x
-        self.y = y
-
-#########################################################
-
-#Client argument parser
-def clientParse():
-        parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)    
-
-        parser.add_argument('ip', type=str,
-                    help='Client IP')
-
-        parser.add_argument('-ipS', type=str,
-                    help='IPv6 Address' , default="::1")
-
-        parser.add_argument('-sport', type=int,
-                    help='Server Port', default="5555")
-
-        parser.add_argument('-cport', type=int,
-                    help='Client Port', default="5553")            
-
-        args = parser.parse_args()
-        return(args.ip,args.ipS,args.sport,args.cport)
-
-######################################################### 
+###########################################################################################
 
 #Main functions      
  
-player_ip,serverAddress,serverPort,clientport = clientParse()
+player_ip,serverAddress,serverPort,clientport = argument_parsers.clientParse()
 UDPClientSocket.bind(("::1",clientport))
 g = Game()
                         
 while g.running:
     g.new_game()
     g.game_over_display()
-
-
-
